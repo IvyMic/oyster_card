@@ -58,9 +58,11 @@ describe Journey do
       expect(subject.fare).to eq(Oystercard::MIN_FAIR)
     end
     it 'returns penalty fare when there is no entry station' do
+      subject.start_journey(entry_station)
       expect(subject.fare).to eq(Oystercard::PENALTY)
     end
     it 'returns penalty fare when there is no exit station' do
+      subject.finish_journey(exit_station)
       expect(subject.fare).to eq(Oystercard::PENALTY)
     end
   end
