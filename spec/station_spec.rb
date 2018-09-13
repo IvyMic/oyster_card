@@ -15,6 +15,4 @@ describe Station do
     expect(subject.zone).to eq(:zone)
   end
 
-
-
 end

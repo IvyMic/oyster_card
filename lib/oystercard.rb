@@ -1,33 +1,33 @@
+require "journey.rb"
 class Oystercard
 
-  attr_reader :balance, :journeys
+  attr_reader :balance, :journeys_history, :journey
   MAXIMUM = 90
   MIN_FAIR = 1
-
+  PENALTY = 6
+  #plan: touchin sets the entry station, touch out sets
+  #exit station. on touch out call fare to charge customer
+  #and also set entry/exit to nil 
   def initialize
     @balance = 0
-    @journeys = []
+    @journey = Journey.new
+    @journeys_history = []
   end
 
   def top_up(money)
     fail 'Unable to top up,maximum #{Oystercard::MAXIMUM} reached'if balance + money > MAXIMUM
-      @balance += money
+    @balance += money
   end
 
   def touch_in(station)
     fail 'Insufficient funds' if balance < MIN_FAIR
-    @in_journey = true
-    @journeys << {entry_station: station}
+    @journey.start_journey(station)
   end
 
   def touch_out(exit_station)
-    @journeys[-1][:exit_station] = exit_station
-    #@exit_station = exit_station
-    deduct(MIN_FAIR)
-  end
-
-  def in_journey?
-    !(@journeys[-1].has_key? :exit_station)
+    @journey.finish_journey(exit_station)
+    @journeys_history << @journey.journey_hash
+    deduct(journey.fare)
   end
 
   private
