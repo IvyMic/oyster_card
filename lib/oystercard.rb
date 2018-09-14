@@ -8,9 +8,9 @@ class Oystercard
   #plan: touchin sets the entry station, touch out sets
   #exit station. on touch out call fare to charge customer
   #and also set entry/exit to nil 
-  def initialize
+  def initialize(journey = Journey.new)
     @balance = 0
-    @journey = Journey.new
+    @journey = journey
     @journeys_history = []
   end
 

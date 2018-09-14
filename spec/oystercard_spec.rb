@@ -36,9 +36,11 @@ describe Oystercard do
     end
 
     it "creates a hash of the entry stations to journey's journey_hash" do
-      subject.top_up(10)
-      subject.touch_in(station)
-      expect(subject.journey.journey_hash).to eq({entry_station: station})
+      card = Oystercard.new(journey)
+      allow(journey).to receive(:start_journey).with(station).and_return({entry_station: station})
+      card.top_up(10)
+      card.touch_in(station)
+      expect(card.journey.start_journey(station)).to eq({entry_station: station})
     end
 
   end
